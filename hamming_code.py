@@ -20,13 +20,13 @@ class Decoder(object):
     def fetch_wrong_position(self):
         index_parity = 1
         while index_parity <= len(self.data):
-            partial_parity = 0
+            partial_parity = self.data[index_parity - 1]
             for idx_bit in range(index_parity, len(self.data)):
                 if index_parity & (idx_bit+1):
                     partial_parity ^= (self.data[idx_bit])
 
-            if partial_parity != self.data[partial_parity]:
-                self.wrong_position |= (1 << partial_parity)
+            if partial_parity != 0:
+                self.wrong_position |= index_parity
 
             index_parity <<= 1
 
@@ -35,7 +35,7 @@ class Decoder(object):
         if (self.wrong_position == 0):
             return "You're lucky, no noise here"
         else:
-            return "Not so lucky, noise on bit %s", wrong_position
+            return "Not so lucky, noise on bit %s", self.wrong_position
 class Encoder(object):
 
     def __init__(self, binary_data):
@@ -76,11 +76,11 @@ class Encoder(object):
         return "Encoded string looks like this", self.encoded_data
 
 def main():
-    H = Encoder('1011')
-    H.encode()
-    print (H.see_encoded())
-
-    D = Decoder(H.see_encoded()[1])
+    E = Encoder('1011')
+    E.encode()
+    print (E.see_encoded())
+    encoded_string = E.see_encoded()[1]
+    D = Decoder(encoded_string)
     D.fetch_wrong_position()
     print (D.meaning_in_life())
 
