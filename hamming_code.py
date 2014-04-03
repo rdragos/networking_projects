@@ -3,11 +3,11 @@ def is_power_of_two(x):
     return (x & (x - 1)) == 0
 
 def calculate_log(num):
-            log = 0
-            while num > 0:
-                num >>= 1
-                log += 1
-            return log
+    log = 0
+    while num > 0:
+        num >>= 1
+        log += 1
+    return log
 
 
 class Decoder(object):
